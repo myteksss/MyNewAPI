@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-
+using MyNewAPI.Models;
 
 namespace MyNewAPI.Controllers 
 { 
@@ -10,19 +10,27 @@ namespace MyNewAPI.Controllers
         
         [HttpGet]
         [Route("QuizNameGetAll")]
-        public JsonResult QuizNameGetAll()
+        public ActionResult<IEnumerable<QuizNameDto>> QuizNameGetAll()
         {
-            return new JsonResult(QuizNameDataStore.Current.QuizNames);
+            var result = QuizNameDataStore.Current.QuizNames.ToList();            
+
+            return Ok(result);
                 
         }
 
         [HttpGet]
         [Route("QuizNameGetById/{quizNameId}")]
-        public JsonResult QuizNameGetById(int quizNameId)
+        public ActionResult<QuizNameDto> QuizNameGetById(int quizNameId)
         {
-            var result = new JsonResult(QuizNameDataStore.Current.QuizNames.Where(x => x.Id == quizNameId));    
+            var result = QuizNameDataStore.Current.QuizNames.FirstOrDefault(x => x.Id == quizNameId);    
 
-            return result;      
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+
+            return Ok(result);
         }
     }
 

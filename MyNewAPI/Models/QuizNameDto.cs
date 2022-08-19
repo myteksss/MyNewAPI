@@ -1,3 +1,5 @@
+using Quiz.API.Models;
+
 namespace MyNewAPI.Models
 {
     public class QuizNameDto
@@ -6,6 +8,7 @@ namespace MyNewAPI.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public int Level { get; set; }
+        public List<QuizQuestionsDto> QuestionAnswer { get; set; }
 
     }
 }
