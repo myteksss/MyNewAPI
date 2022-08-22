@@ -9,7 +9,7 @@ namespace Quiz.API.Controllers
     public class QuizQuestionController : ControllerBase
     {
         [HttpGet]
-        [Route("QuizQuestion")]
+        [Route("GetAllQuestion/{quizId}")]
         public ActionResult<IEnumerable<QuizQuestionsDto>> GetAllQuestion( int quizId)
         {
             var result = QuizNameDataStore.Current.QuizNames.FirstOrDefault(x => x.Id == quizId);
