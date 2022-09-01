@@ -42,5 +42,30 @@ namespace Quiz.API.Controllers
             return Ok(question);
 
         }
+
+        [HttpPost("AddQuizQuestion")]
+        public ActionResult<QuizQuestionsDto> AddQuizQuestion(int quizId, [FromBody] AddQuizQuestionsDto question)
+        {
+
+            var quiz = QuizNameDataStore.Current.QuizNames.FirstOrDefault(x => x.Id == quizId);
+            if (quiz == null)
+            {
+                return NotFound();
+            }
+
+            var maxQuestionId = QuizNameDataStore.Current.QuizNames.SelectMany(x => x.QuizQuestion).Max(y => y.Id);
+
+            var newQuizQuestion = new QuizQuestionsDto()
+            {
+                Id = ++maxQuestionId,
+                QuizNameId = quizId,
+                Question = question.Question,
+                Level = question.Level
+            };
+
+            quiz.QuizQuestion.Add(newQuizQuestion);
+
+            return Ok();
+        }
     }
 }
