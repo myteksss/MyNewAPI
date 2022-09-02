@@ -7,6 +7,6 @@ namespace Quiz.API.Models
         public int QuizNameId { get; set; }
         public string Question { get; set; }
         public int Level { get; set; }
-        public List<QuizOptionDto> quizOption { get; set; }       
+        public List<AddQuizOptionDto> quizOption { get; set; }       
     }
 }
