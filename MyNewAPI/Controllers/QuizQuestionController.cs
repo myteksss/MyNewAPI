@@ -47,6 +47,11 @@ namespace Quiz.API.Controllers
         public ActionResult<QuizQuestionsDto> AddQuizQuestion(int quizId, [FromBody] AddQuizQuestionsDto question)
         {
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             var quiz = QuizNameDataStore.Current.QuizNames.FirstOrDefault(x => x.Id == quizId);
             if (quiz == null)
             {
@@ -69,9 +74,9 @@ namespace Quiz.API.Controllers
                                {
                                    Id = ++maxQuizOptionId,
                                    QuizQuestionId = quizId,
-                                   Option = "",
-                                   CorrectOption = 1
-                               } 
+                                   Option = question.quizOption[0].Option,
+                                   CorrectOption = question.quizOption[0].CorrectOption
+                               }
                 }
             };
 
@@ -81,7 +86,7 @@ namespace Quiz.API.Controllers
                 new
                 {
                     quizId = quizId,
-                    ff = newQuizQuestion.Id
+                    questionId = newQuizQuestion.Id
                 }, newQuizQuestion);
         }
     }

@@ -37,28 +37,28 @@ namespace MyNewAPI
                                    Id = 1,
                                    QuizQuestionId = 1,
                                    Option = "Red",
-                                   CorrectOption = 0
+                                   CorrectOption = false
                                },
                                new QuizOptionDto()
                                {
                                    Id = 2,
                                    QuizQuestionId = 1,
                                    Option = "Blue",
-                                   CorrectOption = 0
+                                   CorrectOption = false
                                },
                                new QuizOptionDto()
                                {
                                    Id = 3,
                                    QuizQuestionId = 1,
                                    Option = "Blue",
-                                   CorrectOption = 0
+                                   CorrectOption = false
                                }, 
                                new QuizOptionDto()
                                {
                                    Id = 4,
                                    QuizQuestionId = 1,
                                    Option = "Black",
-                                   CorrectOption = 1
+                                   CorrectOption = true
                                }
                             }
                         },
@@ -75,28 +75,28 @@ namespace MyNewAPI
                                    Id = 5,
                                    QuizQuestionId = 2,
                                    Option = "W aucie",
-                                   CorrectOption = 0
+                                   CorrectOption = false
                                },
                                new QuizOptionDto()
                                {
                                    Id = 6,
                                    QuizQuestionId = 2,
                                    Option = "W ja³cie",
-                                   CorrectOption = 0
+                                   CorrectOption = false
                                },
                                new QuizOptionDto()
                                {
                                    Id = 7,
                                    QuizQuestionId = 2,
                                    Option = "W hotelu",
-                                   CorrectOption = 0
+                                   CorrectOption = false
                                },
                                new QuizOptionDto()
                                {
                                    Id = 8,
                                    QuizQuestionId = 2,
                                    Option = "Pod schodami",
-                                   CorrectOption = 1
+                                   CorrectOption = true
                                }
                             }
                         }
@@ -123,28 +123,28 @@ namespace MyNewAPI
                                    Id = 5,
                                    QuizQuestionId = 2,
                                    Option = "Yellow",
-                                   CorrectOption = 0
+                                   CorrectOption = false
                                },
                                new QuizOptionDto()
                                {
                                    Id = 6,
                                    QuizQuestionId = 2,
                                    Option = "Pink",
-                                   CorrectOption = 0
+                                   CorrectOption = false
                                },
                                new QuizOptionDto()
                                {
                                    Id = 7,
                                    QuizQuestionId = 2,
                                    Option = "Blue",
-                                   CorrectOption = 0
+                                   CorrectOption = false
                                },
                                new QuizOptionDto()
                                {
                                    Id = 8,
                                    QuizQuestionId = 2,
                                    Option = "Black",
-                                   CorrectOption = 1
+                                   CorrectOption = true
                                }
                             }
                         }
@@ -168,31 +168,31 @@ namespace MyNewAPI
                             {
                                new QuizOptionDto()
                                {
-                                   Id = 1,
+                                   Id = 9,
                                    QuizQuestionId = 3,
                                    Option = "Blondie",
-                                   CorrectOption = 0
+                                   CorrectOption = false
                                },
                                new QuizOptionDto()
                                {
-                                   Id = 2,
+                                   Id = 10,
                                    QuizQuestionId = 3,
                                    Option = "Red",
-                                   CorrectOption = 0
+                                   CorrectOption = false
                                },
                                new QuizOptionDto()
                                {
-                                   Id = 3,
+                                   Id = 11,
                                    QuizQuestionId = 3,
                                    Option = "No hair",
-                                   CorrectOption = 0
+                                   CorrectOption = false
                                },
                                new QuizOptionDto()
                                {
-                                   Id = 4,
+                                   Id = 12,
                                    QuizQuestionId = 3,
                                    Option = "Black",
-                                   CorrectOption = 1
+                                   CorrectOption = true
                                }
                             }
                         }
