@@ -5,6 +5,6 @@
         public int Id { get; set; }
         public int QuizQuestionId { get; set; }
         public string Option { get; set; }        
-        public int CorrectOption { get; set; }
+        public bool CorrectOption { get; set; }
     }
 }

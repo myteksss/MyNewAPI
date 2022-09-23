@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using MyNewAPI;
 using Quiz.API.Models;
 
@@ -47,6 +48,11 @@ namespace Quiz.API.Controllers
         public ActionResult<QuizQuestionsDto> AddQuizQuestion(int quizId, [FromBody] AddQuizQuestionsDto question)
         {
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             var quiz = QuizNameDataStore.Current.QuizNames.FirstOrDefault(x => x.Id == quizId);
             if (quiz == null)
             {
@@ -69,10 +75,9 @@ namespace Quiz.API.Controllers
                                {
                                    Id = ++maxQuizOptionId,
                                    QuizQuestionId = quizId,
-                                   Option = question.quizOption.Select(x => x.Option).ToString(),
-                                   CorrectOption = 1
-                                   
-                               } 
+                                   Option = question.quizOption[0].Option,
+                                   CorrectOption = question.quizOption[0].CorrectOption
+                               }
                 }
             };
 
@@ -82,8 +87,73 @@ namespace Quiz.API.Controllers
                 new
                 {
                     quizId = quizId,
-                    ff = newQuizQuestion.Id
+                    questionId = newQuizQuestion.Id
                 }, newQuizQuestion);
+        }
+
+        [HttpPut("UpdateQuizQuestion/{questionId}")]
+        public ActionResult<QuizQuestionsDto> UpdateQuizQuestion(int quizId, int questionId, UpdateQuizQuestionDto updateQuizQuestionDto)
+        {
+            var quiz = QuizNameDataStore.Current.QuizNames.FirstOrDefault(x => x.Id == quizId);
+
+            if (quiz == null)
+            {
+                return BadRequest();
+            }
+
+            var question = quiz.QuizQuestion.FirstOrDefault(x => x.Id == questionId);
+
+            if (question == null)
+            {
+                return BadRequest();
+            }
+
+            question.Question = updateQuizQuestionDto.Question;
+            question.Level = updateQuizQuestionDto.Level;
+
+            return CreatedAtRoute("GetQuestion",
+                new
+                {
+                    quizId = quizId,
+                    questionId = questionId
+                }, updateQuizQuestionDto);
+        }
+
+        [HttpPatch("PartiallyUpdateQuestion/{questionId}")]
+        public ActionResult PartiallyUpdateQuestion(int quizId, int questionId,
+            JsonPatchDocument<UpdateQuizQuestionDto> patchDocument)
+        {
+            var quiz = QuizNameDataStore.Current.QuizNames.FirstOrDefault(x => x.Id == quizId);
+
+            if (quiz == null)
+            {
+                return BadRequest();
+            }
+
+            var question = quiz.QuizQuestion.FirstOrDefault(x => x.Id == questionId);
+
+            if (question == null)
+            {
+                return BadRequest();
+            }
+
+            var questionPatch = new UpdateQuizQuestionDto()
+            {
+                Question = question.Question,
+                Level = question.Level
+            };
+
+            patchDocument.ApplyTo(questionPatch, ModelState);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            question.Question = questionPatch.Question;
+            question.Level = questionPatch.Level;
+
+            return NoContent();
         }
     }
 }
