@@ -69,8 +69,9 @@ namespace Quiz.API.Controllers
                                {
                                    Id = ++maxQuizOptionId,
                                    QuizQuestionId = quizId,
-                                   Option = "",
+                                   Option = question.quizOption.Select(x => x.Option).ToString(),
                                    CorrectOption = 1
+                                   
                                } 
                 }
             };
