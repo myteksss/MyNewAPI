@@ -127,14 +127,14 @@ namespace Quiz.API.Controllers
 
             if (quiz == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             var question = quiz.QuizQuestion.FirstOrDefault(x => x.Id == questionId);
 
             if (question == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             var questionPatch = new UpdateQuizQuestionDto()
@@ -150,10 +150,37 @@ namespace Quiz.API.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (!TryValidateModel(questionPatch))
+            {
+                return BadRequest(ModelState);
+            }
+
             question.Question = questionPatch.Question;
             question.Level = questionPatch.Level;
 
             return NoContent();
+        }
+
+        [HttpPut("DeleteQuizQuestion/{questionId}")]
+        public ActionResult<QuizQuestionsDto> DeleteQuizQuestion(int quizId, int questionId)
+        {
+            var quiz = QuizNameDataStore.Current.QuizNames.FirstOrDefault(x => x.Id == quizId);
+
+            if (quiz == null)
+            {
+                return NotFound();
+            }
+
+            var question = quiz.QuizQuestion.FirstOrDefault(x => x.Id == questionId);
+
+            if (question == null)
+            {
+                return NotFound();
+            }
+
+            quiz.QuizQuestion.Remove(question);
+            return NoContent();
+
         }
     }
 }

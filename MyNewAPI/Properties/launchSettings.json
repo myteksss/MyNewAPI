@@ -28,14 +28,6 @@
       "dotnetRunMessages": true,
       "launchBrowser": true
     },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "weatherforecast",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
     "WSL": {
       "commandName": "WSL2",
       "launchUrl": "https://localhost:7065/weatherforecast",
