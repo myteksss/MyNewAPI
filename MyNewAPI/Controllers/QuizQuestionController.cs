@@ -9,25 +9,48 @@ namespace Quiz.API.Controllers
     [Route("[controller]")]
     public class QuizQuestionController : ControllerBase
     {
+
+        private readonly ILogger<QuizQuestionController> _logger;
+
+        private readonly QuizNameDataStore _quizNameDataStore;
+
+        public QuizQuestionController(ILogger<QuizQuestionController> logger, QuizNameDataStore quizNameDataStore)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _quizNameDataStore = quizNameDataStore;
+        }
+
         [HttpGet]
         [Route("GetAllQuestion/{quizId}")]
-        public ActionResult<IEnumerable<QuizQuestionsDto>> GetAllQuestion( int quizId)
+        public ActionResult<IEnumerable<QuizQuestionsDto>> GetAllQuestion(int quizId)
         {
-            var result = QuizNameDataStore.Current.QuizNames.FirstOrDefault(x => x.Id == quizId);
-
-            if (result == null)
+            try
             {
-                return NotFound();
+                var result = _quizNameDataStore.QuizNames.FirstOrDefault(x => x.Id == quizId);
+
+                if (result == null)
+                {
+
+                    _logger.LogInformation($"Quiz name with id {quizId} wasn't found");
+
+                    return NotFound();
+                }
+
+                return Ok(result.QuizQuestion);
+            }
+            catch (Exception)
+            {
+                _logger.LogCritical($"Critical while geting quiz question with id {quizId}");
+                return StatusCode(500,"A problem happened while handling your request.");
             }
 
-            return Ok(result.QuizQuestion);
         }
 
         [HttpGet("GetQuestion/{quizId}/{questionId}", Name = "GetQuestion")]
         public ActionResult<QuizQuestionsDto> GetQuestion(int quizId, int questionId)
         {
-            var quiz = QuizNameDataStore.Current.QuizNames.FirstOrDefault(x => x.Id == quizId);            
-            
+            var quiz = _quizNameDataStore.QuizNames.FirstOrDefault(x => x.Id == quizId);
+
             if (quiz == null)
             {
                 return NotFound();
@@ -39,7 +62,7 @@ namespace Quiz.API.Controllers
             {
                 return NotFound();
             }
-            
+
             return Ok(question);
 
         }
@@ -53,15 +76,15 @@ namespace Quiz.API.Controllers
                 return BadRequest();
             }
 
-            var quiz = QuizNameDataStore.Current.QuizNames.FirstOrDefault(x => x.Id == quizId);
+            var quiz = _quizNameDataStore.QuizNames.FirstOrDefault(x => x.Id == quizId);
             if (quiz == null)
             {
                 return NotFound();
             }
 
-            var maxQuestionId = QuizNameDataStore.Current.QuizNames.FirstOrDefault(x => x.Id == quizId).QuizQuestion.Max(y => y.Id);
+            var maxQuestionId = _quizNameDataStore.QuizNames.FirstOrDefault(x => x.Id == quizId).QuizQuestion.Max(y => y.Id);
 
-            var maxQuizOptionId = QuizNameDataStore.Current.QuizNames.SelectMany(x => x.QuizQuestion).SelectMany(y => y.quizOption).Max(z => z.Id);
+            var maxQuizOptionId = _quizNameDataStore.QuizNames.SelectMany(x => x.QuizQuestion).SelectMany(y => y.quizOption).Max(z => z.Id);
 
             var newQuizQuestion = new QuizQuestionsDto()
             {
@@ -94,7 +117,7 @@ namespace Quiz.API.Controllers
         [HttpPut("UpdateQuizQuestion/{questionId}")]
         public ActionResult<QuizQuestionsDto> UpdateQuizQuestion(int quizId, int questionId, UpdateQuizQuestionDto updateQuizQuestionDto)
         {
-            var quiz = QuizNameDataStore.Current.QuizNames.FirstOrDefault(x => x.Id == quizId);
+            var quiz = _quizNameDataStore.QuizNames.FirstOrDefault(x => x.Id == quizId);
 
             if (quiz == null)
             {
@@ -123,7 +146,7 @@ namespace Quiz.API.Controllers
         public ActionResult PartiallyUpdateQuestion(int quizId, int questionId,
             JsonPatchDocument<UpdateQuizQuestionDto> patchDocument)
         {
-            var quiz = QuizNameDataStore.Current.QuizNames.FirstOrDefault(x => x.Id == quizId);
+            var quiz = _quizNameDataStore.QuizNames.FirstOrDefault(x => x.Id == quizId);
 
             if (quiz == null)
             {
@@ -164,7 +187,7 @@ namespace Quiz.API.Controllers
         [HttpPut("DeleteQuizQuestion/{questionId}")]
         public ActionResult<QuizQuestionsDto> DeleteQuizQuestion(int quizId, int questionId)
         {
-            var quiz = QuizNameDataStore.Current.QuizNames.FirstOrDefault(x => x.Id == quizId);
+            var quiz = _quizNameDataStore.QuizNames.FirstOrDefault(x => x.Id == quizId);
 
             if (quiz == null)
             {

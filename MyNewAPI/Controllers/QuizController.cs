@@ -7,12 +7,19 @@ namespace MyNewAPI.Controllers
     [Route("[controller]")]
     public class QuizController : ControllerBase
     {
+
+        private readonly QuizNameDataStore _quizNameDataStore;
         
+        public QuizController(QuizNameDataStore quizNameDataStore)
+        {
+            _quizNameDataStore = quizNameDataStore;
+        }
+
         [HttpGet]
         [Route("QuizNameGetAll")]
         public ActionResult<IEnumerable<QuizNameDto>> QuizNameGetAll()
         {
-            var result = QuizNameDataStore.Current.QuizNames.ToList();            
+            var result = _quizNameDataStore.QuizNames.ToList();            
 
             return Ok(result);
                 
@@ -22,7 +29,7 @@ namespace MyNewAPI.Controllers
         [Route("QuizNameGetById/{quizNameId}")]
         public ActionResult<QuizNameDto> QuizNameGetById(int quizNameId)
         {
-            var result = QuizNameDataStore.Current.QuizNames.FirstOrDefault(x => x.Id == quizNameId);    
+            var result = _quizNameDataStore.QuizNames.FirstOrDefault(x => x.Id == quizNameId);    
 
             if (result == null)
             {

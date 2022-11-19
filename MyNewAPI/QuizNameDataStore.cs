@@ -10,7 +10,7 @@ namespace MyNewAPI
 
         //public List<QuizQuestionsDto> quizQuestionsDtos { get; set; }
 
-        public static QuizNameDataStore Current { get; } = new QuizNameDataStore();
+        //public static QuizNameDataStore Current { get; } = new QuizNameDataStore();
 
         public QuizNameDataStore()
         {
